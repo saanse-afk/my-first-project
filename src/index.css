@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #0a0518;
+  --depth-1: #120d2e;
+  --depth-2: #1a1245;
+  --accent-orange: #f97316;
+  --accent-purple: #a855f7;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-strong: rgba(255, 255, 255, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-base);
+  color: #f1f5f9;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.5);
+}
+
+/* ─── 3D Utilities ──────────────────────────────────────── */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.perspective-500 { perspective: 500px; }
+.perspective-800 { perspective: 800px; }
+.perspective-1000 { perspective: 1000px; }
+.perspective-1500 { perspective: 1500px; }
+
+/* ─── Glass Panel ───────────────────────────────────────── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-panel-strong {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  border: 1px solid var(--glass-border-strong);
+}
+
+/* ─── Glow Text ─────────────────────────────────────────── */
+.glow-text-orange {
+  text-shadow:
+    0 0 10px rgba(249, 115, 22, 0.8),
+    0 0 30px rgba(249, 115, 22, 0.4),
+    0 0 60px rgba(249, 115, 22, 0.2);
+}
+.glow-text-purple {
+  text-shadow:
+    0 0 10px rgba(168, 85, 247, 0.8),
+    0 0 30px rgba(168, 85, 247, 0.4),
+    0 0 60px rgba(168, 85, 247, 0.2);
+}
+
+/* ─── 3D Text depth (logo) ──────────────────────────────── */
+.text-3d {
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.8),
+    2px 2px 0 rgba(0, 0, 0, 0.6),
+    3px 3px 0 rgba(0, 0, 0, 0.4),
+    4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Gradient animated border ──────────────────────────── */
+.gradient-border-bottom {
+  position: relative;
+}
+.gradient-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(249, 115, 22, 0.6),
+    rgba(168, 85, 247, 0.6),
+    rgba(249, 115, 22, 0.6),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─── Blinking cursor for streaming ────────────────────── */
+.streaming-cursor::after {
+  content: '▋';
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: var(--accent-orange);
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ─── Depth card shadow ─────────────────────────────────── */
+.card-depth {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.25),
+    0 24px 48px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Section transition wrapper ───────────────────────── */
+.section-perspective-wrapper {
+  perspective: 1200px;
+  perspective-origin: 50% -20%;
+}
+
+/* ─── Input focus glow ──────────────────────────────────── */
+textarea:focus, input:focus {
+  outline: none;
+}
+
+/* ─── Copy button hover reveal ─────────────────────────── */
+.message-bubble-wrapper .copy-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.message-bubble-wrapper:hover .copy-btn {
+  opacity: 1;
+}
+
+/* ─── Empty state icon ──────────────────────────────────── */
+.empty-state-icon {
+  filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.3));
+}
