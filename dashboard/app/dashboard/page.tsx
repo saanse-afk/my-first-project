@@ -15,6 +15,7 @@ import { Eye, TrendingUp, Zap, Users } from 'lucide-react'
 import type { PostWithMetrics } from '@/types'
 
 async function getDashboardData() {
+  try {
   const supabase = createServiceClient()
 
   const [postsRes, accountsRes] = await Promise.all([
@@ -42,6 +43,9 @@ async function getDashboardData() {
   const lastSynced = accounts.find((a) => a.platform === 'instagram')?.last_synced_at
 
   return { posts, followersCount, lastSynced }
+  } catch {
+    return { posts: [] as PostWithMetrics[], followersCount: 0, lastSynced: null }
+  }
 }
 
 export default async function DashboardPage() {

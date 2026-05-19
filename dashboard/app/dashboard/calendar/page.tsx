@@ -9,14 +9,17 @@ import { FestivalGenerateButton } from '@/components/calendar/festival-generate-
 import type { Festival } from '@/types'
 
 export default async function CalendarPage() {
-  const supabase = createServiceClient()
-
-  const { data } = await supabase
-    .from('festivals')
-    .select('*')
-    .gte('date', new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10))
-    .order('date')
-    .limit(50)
+  let data = null
+  try {
+    const supabase = createServiceClient()
+    const res = await supabase
+      .from('festivals')
+      .select('*')
+      .gte('date', new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10))
+      .order('date')
+      .limit(50)
+    data = res.data
+  } catch { /* show empty state */ }
 
   const festivals: Festival[] = data || []
 

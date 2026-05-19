@@ -8,13 +8,16 @@ import { ExternalLink } from 'lucide-react'
 import type { PostWithMetrics } from '@/types'
 
 export default async function PostsPage() {
-  const supabase = createServiceClient()
-
-  const { data } = await supabase
-    .from('posts')
-    .select(`*, post_metrics(*)`)
-    .order('published_at', { ascending: false })
-    .limit(200)
+  let data = null
+  try {
+    const supabase = createServiceClient()
+    const res = await supabase
+      .from('posts')
+      .select(`*, post_metrics(*)`)
+      .order('published_at', { ascending: false })
+      .limit(200)
+    data = res.data
+  } catch { data = null }
 
   const posts: PostWithMetrics[] = (data || []).map((p) => ({
     ...p,

@@ -15,12 +15,14 @@ import { InsightsGenerateButton } from '@/components/insights/generate-button'
 import type { PostWithMetrics } from '@/types'
 
 export default async function InsightsPage() {
-  const supabase = createServiceClient()
-
-  const [postsRes, festsRes] = await Promise.all([
-    supabase.from('posts').select(`*, post_metrics(*)`).order('published_at', { ascending: false }).limit(500),
-    supabase.from('festivals').select('*').gte('date', new Date().toISOString().slice(0, 10)).order('date').limit(20),
-  ])
+  let postsRes = { data: null }, festsRes = { data: null }
+  try {
+    const supabase = createServiceClient()
+    ;[postsRes, festsRes] = await Promise.all([
+      supabase.from('posts').select(`*, post_metrics(*)`).order('published_at', { ascending: false }).limit(500),
+      supabase.from('festivals').select('*').gte('date', new Date().toISOString().slice(0, 10)).order('date').limit(20),
+    ])
+  } catch { /* show empty state */ }
 
   const posts: PostWithMetrics[] = (postsRes.data || []).map((p) => ({
     ...p,

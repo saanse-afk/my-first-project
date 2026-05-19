@@ -7,15 +7,17 @@ import { formatRelativeTime, formatDate } from '@/lib/utils'
 import { CheckCircle2, XCircle, Clock } from 'lucide-react'
 
 export default async function SettingsPage() {
-  const supabase = createServiceClient()
-
-  const [accountsRes, syncLogsRes] = await Promise.all([
-    supabase.from('social_accounts').select('*').order('created_at'),
-    supabase.from('sync_logs').select('*').order('started_at', { ascending: false }).limit(20),
-  ])
-
-  const accounts = accountsRes.data || []
-  const syncLogs = syncLogsRes.data || []
+  let accounts: Record<string, unknown>[] = []
+  let syncLogs: Record<string, unknown>[] = []
+  try {
+    const supabase = createServiceClient()
+    const [accountsRes, syncLogsRes] = await Promise.all([
+      supabase.from('social_accounts').select('*').order('created_at'),
+      supabase.from('sync_logs').select('*').order('started_at', { ascending: false }).limit(20),
+    ])
+    accounts = accountsRes.data || []
+    syncLogs = syncLogsRes.data || []
+  } catch { /* show empty state */ }
 
   const igAccount = accounts.find((a) => a.platform === 'instagram')
   const ytAccount = accounts.find((a) => a.platform === 'youtube')
